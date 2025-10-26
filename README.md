@@ -1,5 +1,7 @@
 # MATLAB MCP Server
 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/subspace-lab/matlab-mcp-server)
+
 A Model Context Protocol (MCP) server that enables seamless integration between MATLAB and MCP-compatible applications. Execute MATLAB code, manage workspace variables, create plots, handle data I/O, and more - all through a token-efficient MCP interface.
 
 ## Features
