@@ -2,8 +2,21 @@
 name = "matlab-mcp-server"
 version = "0.2.0"
 description = "MCP server for MATLAB integration"
+readme = "README.md"
+license = { file = "LICENSE" }
 authors = [
-    { name = "Subspace Lab"}
+    { name = "Subspace Lab", email = "git@subspace-lab.com" }
+]
+keywords = ["matlab", "mcp", "model-context-protocol", "integration"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
 ]
 requires-python = ">=3.10,<3.14"
 dependencies = [
@@ -21,6 +34,11 @@ dev = [
 [project.scripts]
 matlab-mcp = "matlab_mcp_server.server:run"
 matlab-cli = "matlab_mcp_server.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/subspace-lab/matlab-mcp-server"
+Repository = "https://github.com/subspace-lab/matlab-mcp-server"
+Issues = "https://github.com/subspace-lab/matlab-mcp-server/issues"
 
 [build-system]
 requires = ["hatchling"]
