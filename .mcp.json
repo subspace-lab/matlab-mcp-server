@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "matlab": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "/Users/weiqi/Documents/dropbox-weiqi-api/matlab-mcp-server",
+        "run",
+        "matlab-mcp"
+      ]
+    }
+  }
+}

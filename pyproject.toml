@@ -1,0 +1,42 @@
+[project]
+name = "matlab-mcp-server"
+version = "0.2.0"
+description = "MCP server for MATLAB integration"
+authors = [
+    { name = "Subspace Lab"}
+]
+requires-python = ">=3.10,<3.14"
+dependencies = [
+    "mcp>=1.0.0",
+    "matlabengine>=24.2.0,<26",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-cov>=4.1.0",
+    "pytest-asyncio>=0.23.0",
+]
+
+[project.scripts]
+matlab-mcp = "matlab_mcp_server.server:run"
+matlab-cli = "matlab_mcp_server.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "-v",
+    "--strict-markers",
+    "--tb=short",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+]
