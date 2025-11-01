@@ -113,8 +113,7 @@ Create `.mcp.json` in your project root directory:
 {
   "mcpServers": {
     "matlab": {
-      "command": "uvx",
-      "args": ["matlab-mcp-server"],
+      "command": "matlab-mcp",
       "env": {
         "DYLD_LIBRARY_PATH": "/Applications/MATLAB_R20XXx.app/bin/maca64"
       }
@@ -128,8 +127,7 @@ Create `.mcp.json` in your project root directory:
 {
   "mcpServers": {
     "matlab": {
-      "command": "uvx",
-      "args": ["matlab-mcp-server"],
+      "command": "matlab-mcp",
       "env": {
         "DYLD_LIBRARY_PATH": "/Applications/MATLAB_R20XXx.app/bin/maci64"
       }
@@ -143,8 +141,7 @@ Create `.mcp.json` in your project root directory:
 {
   "mcpServers": {
     "matlab": {
-      "command": "uvx",
-      "args": ["matlab-mcp-server"],
+      "command": "matlab-mcp",
       "env": {
         "LD_LIBRARY_PATH": "/usr/local/MATLAB/R20XXx/bin/glnxa64"
       }
