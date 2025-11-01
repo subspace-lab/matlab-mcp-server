@@ -118,12 +118,14 @@ build:
 
 publish-test:
 	@echo "Publishing to TestPyPI..."
-	uv publish --repository testpypi
+	@echo "Using UV_PUBLISH_TOKEN from environment"
+	uv publish --publish-url https://test.pypi.org/legacy/
 	@echo "Published to TestPyPI!"
 	@echo "Test install with: uv pip install --index-url https://test.pypi.org/simple/ matlab-mcp-server"
 
 publish:
 	@echo "Publishing to PyPI..."
+	@echo "Using UV_PUBLISH_TOKEN from environment"
 	@read -p "Are you sure you want to publish to PyPI? (y/N): " confirm && [ "$$confirm" = "y" ] || exit 1
 	uv publish
 	@echo "Published to PyPI!"
