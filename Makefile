@@ -116,26 +116,6 @@ build:
 	uv build
 	@echo "Build complete. Packages in dist/"
 
-publish-test:
-	@echo "Publishing to TestPyPI..."
-	@if [ -z "$$UV_PUBLISH_TOKEN" ]; then \
-		echo "Error: UV_PUBLISH_TOKEN not set. Add to ~/.zshrc: export UV_PUBLISH_TOKEN=\"your-token\""; \
-		exit 1; \
-	fi
-	uv publish --publish-url https://test.pypi.org/legacy/ --token "$$UV_PUBLISH_TOKEN"
-	@echo "Published to TestPyPI!"
-	@echo "Test install with: uv pip install --index-url https://test.pypi.org/simple/ matlab-mcp-server"
-
-publish:
-	@echo "Publishing to PyPI..."
-	@if [ -z "$$UV_PUBLISH_TOKEN" ]; then \
-		echo "Error: UV_PUBLISH_TOKEN not set. Add to ~/.zshrc: export UV_PUBLISH_TOKEN=\"your-token\""; \
-		exit 1; \
-	fi
-	@read -p "Are you sure you want to publish to PyPI? (y/N): " confirm && [ "$$confirm" = "y" ] || exit 1
-	uv publish --token "$$UV_PUBLISH_TOKEN"
-	@echo "Published to PyPI!"
-
 release: clean test-all build publish
 	@echo ""
 	@echo "=========================================="

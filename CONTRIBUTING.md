@@ -349,11 +349,8 @@ uv pip install dist/matlab_mcp_server-X.Y.Z-py3-none-any.whl
 ### Publishing to PyPI
 
 ```bash
-# Test on TestPyPI first
-uv publish --repository testpypi
-
 # Publish to PyPI
-uv publish
+uv publish --token $UV_PUBLISH_TOKEN
 ```
 
 ## Documentation
