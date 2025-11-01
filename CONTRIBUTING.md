@@ -106,10 +106,7 @@ matlab-mcp
 
 ### Claude Code Configuration (Development)
 
-When running from source, use this configuration:
-
-**macOS/Linux**: `~/.config/claude/mcp.json`  
-**Windows**: `%APPDATA%\claude\mcp.json`
+When running from source, create `.mcp.json` in your project root directory:
 
 ```json
 {

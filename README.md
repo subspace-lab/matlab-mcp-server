@@ -37,7 +37,7 @@ Just configure and run - no manual installation needed!
 
 **2. Configure Claude Code:**
 
-Add to `~/.config/claude/mcp.json` (macOS/Linux) or `%APPDATA%\claude\mcp.json` (Windows):
+Create `.mcp.json` in your project root directory:
 
 ```json
 {
@@ -78,7 +78,7 @@ curl -fsSL https://raw.githubusercontent.com/subspace-lab/matlab-mcp-server/main
 The script will:
 - Auto-detect your MATLAB installation
 - Display the config with the correct paths
-- You copy and paste it into your `mcp.json` file
+- You copy and paste it into your `.mcp.json` file (in project root)
 
 ### Option 3: Manual Installation
 
@@ -106,10 +106,7 @@ uv pip install matlab-mcp-server
 
 #### 3. Configure MCP server
 
-Add to your Claude Code config file:
-
-**macOS/Linux**: `~/.config/claude/mcp.json`
-**Windows**: `%APPDATA%\claude\mcp.json`
+Create `.mcp.json` in your project root directory:
 
 **macOS (Apple Silicon):**
 ```json
@@ -158,6 +155,11 @@ Add to your Claude Code config file:
 
 Replace `R20XXx` with your actual MATLAB version.
 
+**Note for Claude Desktop users:** If you're using Claude Desktop (the desktop app) instead of Claude Code (CLI), the configuration file is located at:
+
+- **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+
 ## Available Tools
 
 The server provides 8 MCP tools for interacting with MATLAB:
@@ -178,6 +180,7 @@ For detailed documentation on each tool, see [TOOLS.md](md-files/TOOLS.md) or [M
 ### MATLAB Engine Not Found
 
 If you get an error about MATLAB engine not being found:
+
 1. Ensure MATLAB is properly installed
 2. Verify MATLAB Engine API for Python is installed
 3. Check Python version matches MATLAB compatibility
@@ -186,6 +189,7 @@ If you get an error about MATLAB engine not being found:
 ### Library Path Issues
 
 **Default MATLAB locations:**
+
 - macOS: `/Applications/MATLAB_R20XXx.app`
 - Linux: `/usr/local/MATLAB/R20XXx`
 - Windows: `C:\Program Files\MATLAB\R20XXx`
