@@ -37,6 +37,26 @@ Just configure and run - no manual installation needed!
 
 **2. Configure Claude Code:**
 
+**Option A: Using CLI (Recommended)**
+
+```bash
+# macOS (Apple Silicon)
+claude mcp add --transport stdio matlab \
+  --env DYLD_LIBRARY_PATH=/Applications/MATLAB_R2025b.app/bin/maca64 \
+  -- uvx matlab-mcp-server
+
+# Linux
+claude mcp add --transport stdio matlab \
+  --env LD_LIBRARY_PATH=/usr/local/MATLAB/R2024b/bin/glnxa64 \
+  -- uvx matlab-mcp-server
+```
+
+This uses **local scope** by default (private to you, only this project). For other scopes:
+- `--scope project`: Share with team (stores in `.mcp.json`, can be committed to git)
+- `--scope user`: Available across all your projects
+
+**Option B: Manual `.mcp.json` file**
+
 Create `.mcp.json` in your project root directory:
 
 ```json
@@ -55,12 +75,7 @@ Create `.mcp.json` in your project root directory:
 
 Replace the library path with your actual MATLAB path from step 1.
 
-**For Linux**, use `LD_LIBRARY_PATH` instead of `DYLD_LIBRARY_PATH`:
-```json
-"env": {
-  "LD_LIBRARY_PATH": "/usr/local/MATLAB/R2024b/bin/glnxa64"
-}
-```
+**For Linux**, use `LD_LIBRARY_PATH` instead of `DYLD_LIBRARY_PATH`.
 
 That's it! When Claude Code starts, `uvx` will automatically:
 - Download `matlab-mcp-server` from PyPI
