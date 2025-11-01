@@ -659,6 +659,46 @@ engine.start()              # ✗ No GUI
 
 ### MATLAB Engine Issues
 
+**Problem:** "Version mismatch" or cryptic connection errors
+
+**Cause:** The `matlabengine` Python package version doesn't match your MATLAB installation.
+
+**How version matching works:**
+- The `matlabengine` package contains Python bindings that communicate with MATLAB
+- At runtime, when `import matlab.engine` executes, Python loads the installed matlabengine package
+- When `matlab.engine.start_matlab()` runs, it connects to your MATLAB installation via shared libraries (DYLD_LIBRARY_PATH/LD_LIBRARY_PATH)
+- If major versions differ significantly, you may get connection failures or undefined behavior
+
+**Recommended version matching:**
+| MATLAB Version | matlabengine Version |
+|----------------|---------------------|
+| R2026a         | 26.1.x              |
+| R2025b         | 25.2.x              |
+| R2025a         | 25.1.x              |
+| R2024b         | 24.2.x              |
+| R2024a         | 24.1.x              |
+
+**Solution:** Check your versions and reinstall if needed:
+
+```bash
+# Check your MATLAB version
+matlab -batch "version"
+
+# Check your matlabengine version
+uv pip show matlabengine
+
+# Reinstall matching version from PyPI
+uv pip install matlabengine==25.2.2  # For R2025b
+
+# OR install from MATLAB installation (recommended for exact match)
+cd /Applications/MATLAB_R2025b.app/extern/engines/python
+uv pip install .
+```
+
+**Note:** Minor version mismatches often work (e.g., matlabengine 25.2.x with MATLAB R2025a), but exact matches are most reliable.
+
+---
+
 **Problem:** Type conversion errors
 
 **Solution:** Always convert Python data to MATLAB types:

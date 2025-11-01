@@ -9,30 +9,30 @@
 ---
 
 ## Scenario 1: Quick Compute + Plot (Claude Desktop)
-- As a user, I ask “plot sin(x) from 0..10” and see the plot inline.
+- As a user, I ask "plot sin(x) from 0..10" and see the plot inline.
 - Acceptance
   - Code runs successfully
   - Figure returned inline
   - Any variables validated if requested
 - Tools
-  - `execute_matlab`
-  - `save_current_figure` or `export_figure_as_image`
-  - `get_variable` (optional)
-  - `get_matlab_version` (optional for env notes)
+  - `execute_matlab(code="...")`
+  - `figure(op="save", fmt="png")` or `figure(op="export", path="...")`
+  - `workspace(op="get", var="x")` (optional)
+  - `env(op="version")` (optional for env notes)
 
 ## Scenario 2: Debugging an Error (Claude Code)
 - As a developer, I run a custom function, get an error, inspect workspace, fix path, rerun.
 - Acceptance
   - Error text surfaced
   - Workspace variables visible
-  - Path issues fixable quickly
+  - Path issues fixable via MATLAB code
 - Tools
-  - `execute_matlab`
-  - `get_workspace_variables`
-  - `get_variable`
-  - `add_path`
-  - `change_directory`
-  - `get_help`
+  - `execute_matlab(code="...")`
+  - `workspace(op="list")`
+  - `workspace(op="get", var="...")`
+  - `execute_matlab(code="addpath('...')")` (path management via MATLAB)
+  - `execute_matlab(code="cd('...')")` (directory change via MATLAB)
+  - `get_help(op="help", name="...")`
 
 ## Scenario 3: Data Analysis Pipeline (CSV → MATLAB → Results)
 - As a data scientist, I import CSV, compute stats/plots, export results.
@@ -41,11 +41,11 @@
   - Outputs exported as CSV/PNG
   - Script re-runnable
 - Tools
-  - `import_data`
-  - `execute_matlab` (or `execute_matlab_function`)
-  - `export_data`
-  - `save_current_figure` / `export_figure_as_image`
-  - `save_mat_file`
+  - `data_io(op="import", path="data.csv")`
+  - `execute_matlab(code="...")`
+  - `data_io(op="export", var="results", path="output.csv")`
+  - `figure(op="save", fmt="png", path="plot.png")`
+  - `data_io(op="save_mat", path="backup.mat")`
 
 ## Scenario 4: Use Existing MATLAB GUI (Shared Session)
 - As a power user, I control an already-open MATLAB GUI from Claude.
@@ -53,11 +53,11 @@
   - Connect to shared session by name
   - See updates in Command Window/Workspace
 - Tools
-  - `get_session_info`
-  - `list_shared_sessions`
-  - `connect_to_shared_session` (optional)
-  - `execute_matlab`
-  - `get_workspace_variables`
+  - `session(op="current")` - Check current session
+  - `session(op="list")` - List available shared sessions
+  - `session(op="connect", session_name="MyGUI")` - Connect to shared session
+  - `execute_matlab(code="...")`
+  - `workspace(op="list")`
 
 ## Scenario 5: Toolbox-Aware Assistance
 - As a user, I run code that may require certain toolbox functions.
@@ -65,59 +65,67 @@
   - Toolboxes listed/checked
   - Helpful guidance if missing
 - Tools
-  - `list_installed_toolboxes`
-  - `check_toolbox`
-  - `get_help`
+  - `env(op="list_toolboxes")`
+  - `env(op="check_toolbox", name="Signal Processing Toolbox")`
+  - `get_help(op="help", name="...")`
 
 ## Scenario 6: Long-Running Job + Monitoring
 - As a researcher, I run long computations and monitor progress without blocking.
 - Acceptance
-  - Non-blocking execution or progress logs
+  - Execution progress visible
   - Ability to inspect intermediate variables
 - Tools
-  - `execute_matlab` (with optional async/streaming)
-  - `get_variable`
-  - `get_workspace_variables`
-  - `save_current_figure` (periodic snapshots)
+  - `execute_matlab(code="...")` - Run computation
+  - `workspace(op="get", var="...")`  - Check intermediate results
+  - `workspace(op="list")` - See all variables
+  - `figure(op="save", fmt="png")` - Periodic plot snapshots
+- Note: Async/streaming execution is planned for Phase 3
 
 ## Scenario 7: Reproducible Environment Checks
 - As a developer, I need to capture environment context in results.
 - Acceptance
   - MATLAB version, path, CWD returned on request
 - Tools
-  - `get_matlab_version`
-  - `list_path`
-  - `get_current_directory`
+  - `env(op="version")` - Get MATLAB version
+  - `execute_matlab(code="path")` - Check MATLAB path
+  - `execute_matlab(code="pwd")` - Get current directory
 
-## Scenario 8: Profiling + Performance
+## Scenario 8: Profiling + Performance (Phase 2+)
 - As a power user, I want to profile a function to optimize it.
 - Acceptance
   - Profile results surfaced
   - Hotspots identifiable
-- Tools
-  - `profile_code`
-  - `execute_matlab`
+- Tools (Future):
+  - `execute_matlab(code="profile on; ...; profile viewer")`
+- Status: **Planned for Phase 2** - Use execute_matlab with profiler commands
 
-## Scenario 9: Unit Tests (MATLAB)
+## Scenario 9: Unit Tests (MATLAB) (Phase 2+)
 - As a developer, I run MATLAB unit tests and see pass/fail + diagnostics.
 - Acceptance
   - Test discovery and detailed results
-- Tools
-  - `run_tests`
+- Tools (Future):
+  - `execute_matlab(code="runtests('...')")`
+- Status: **Planned for Phase 2** - Use execute_matlab with runtests
 
-## Scenario 10: Parallel/Distributed Computing
+## Scenario 10: Parallel/Distributed Computing (Phase 3+)
 - As a researcher, I want to use a parallel pool and monitor it.
 - Acceptance
   - Pool lifecycle controlled
   - Status visible
-- Tools
-  - `start_parallel_pool`
-  - `parallel_pool_status`
-  - `stop_parallel_pool`
+- Tools (Future):
+  - `execute_matlab(code="parpool(...)")`
+  - `execute_matlab(code="gcp")`
+- Status: **Planned for Phase 3** - Use execute_matlab with parallel commands
 
 ---
 
 ## Industry Scenarios
+
+**Note:** The scenarios below use simplified tool names for readability. Actual tool calls use multi-operation format:
+- `import_data` → `data_io(op="import", path="...")`
+- `export_data` → `data_io(op="export", var="...", path="...")`
+- `save_current_figure` → `figure(op="save", fmt="...")`
+- `check_toolbox` → `env(op="check_toolbox", name="...")`
 
 ### Scenario 11: Quant Finance – VaR via Monte Carlo + Backtest
 - As a quant, I compute portfolio Value-at-Risk via Monte Carlo and backtest against historical PnL.
@@ -125,12 +133,12 @@
   - Simulated PnL distribution saved
   - VaR/ES computed and plotted
   - Backtest report exported
-- Tools
-  - `import_data` (prices/weights CSV)
-  - `execute_matlab` (simulation and stats)
-  - `export_data` (VaR report CSV)
-  - `save_current_figure` / `export_figure_as_image` (distribution/backtest charts)
-  - `list_installed_toolboxes`, `check_toolbox` (Econometrics/Statistics)
+- Tools (simplified notation)
+  - `data_io(op="import")` - prices/weights CSV
+  - `execute_matlab` - simulation and stats
+  - `data_io(op="export")` - VaR report CSV
+  - `figure(op="save")` - distribution/backtest charts
+  - `env(op="list_toolboxes")`, `env(op="check_toolbox")` - Econometrics/Statistics
 
 ### Scenario 12: Finance – Time-Series Forecast (ARIMA/GARCH)
 - As a risk analyst, I forecast volatility and returns using ARIMA/GARCH and compare models.
@@ -284,12 +292,21 @@
 ---
 
 ## Cross-Cutting Tooling (Most Scenarios)
-- `execute_matlab`
-- `get_workspace_variables`, `get_variable`, `set_variable`, `clear_workspace`
-- `add_path`, `list_path`, `change_directory`, `get_current_directory`
-- `save_current_figure`, `export_figure_as_image`, `close_figures`
-- `import_data`, `export_data`, `load_mat_file`, `save_mat_file`
-- `get_matlab_version`, `list_installed_toolboxes`, `check_toolbox`
-- `get_help`
+
+### Current Tools (v0.2.1)
+- `execute_matlab(code="...")` - Execute MATLAB code
+- `workspace(op="get"|"set"|"list"|"clear", var?, value?)` - Manage workspace
+- `figure(op="save"|"export"|"close", fmt?, path?)` - Handle figures
+- `data_io(op="import"|"export"|"load_mat"|"save_mat", path, var?)` - Data I/O
+- `env(op="version"|"list_toolboxes"|"check_toolbox", name?)` - Environment info
+- `get_help(op="help"|"lookfor"|"which", name)` - Documentation access
+- `session(op="list"|"connect"|"current", session_name?)` - Session management
+
+### Path/Directory Management
+Use `execute_matlab` with MATLAB commands:
+- `execute_matlab(code="addpath('...')")` - Add to path
+- `execute_matlab(code="path")` - List path
+- `execute_matlab(code="cd('...')")` - Change directory
+- `execute_matlab(code="pwd")` - Get current directory
 
 

@@ -19,39 +19,7 @@ This document provides a comprehensive overview of the testing strategy for the 
 
 ### Running Tests
 
-#### Using Makefile (Recommended)
-
-```bash
-# Run all pytest tests (unit + integration)
-make test
-
-# Run only unit tests
-make test-unit
-
-# Run only integration tests
-make test-integration
-
-# Run end-to-end tests
-make test-e2e
-
-# Run all tests (including E2E)
-make test-all
-
-# Generate coverage report
-make test-coverage
-```
-
-#### Using Test Scripts
-
-```bash
-# Bash (Linux/macOS)
-./scripts/run_tests.sh --all --coverage
-
-# Python (cross-platform)
-python scripts/run_tests.py --all --coverage
-```
-
-#### Using pytest Directly
+#### Using pytest Directly (Recommended)
 
 ```bash
 # All pytest tests
@@ -74,10 +42,10 @@ uv run pytest --cov=src/matlab_mcp_server --cov-report=html
 
 ```bash
 # Python version (via MCP Server)
-uv run python examples/real_world_tests.py
+uv run --env-file .env python examples/real_world_tests.py
 
 # MATLAB version (native MATLAB)
-.venv/bin/matlab-cli -f examples/real_world_tests.m
+uv run --env-file .env matlab-cli -f examples/real_world_tests.m
 ```
 
 ### Test Overview
@@ -91,16 +59,13 @@ uv run python examples/real_world_tests.py
 ### Pre-Release Checklist
 
 ```bash
-# 1. Run all tests
-make test-all
+# 1. Run all tests with coverage
+uv run --env-file .env pytest --cov=src/matlab_mcp_server --cov-report=html
 
-# 2. Check coverage
-make test-coverage
+# 2. Verify real-world scenarios
+uv run --env-file .env python examples/real_world_tests.py
 
-# 3. Verify real-world scenarios
-make test-e2e
-
-# 4. View coverage report
+# 3. View coverage report
 open htmlcov/index.html
 ```
 
@@ -205,10 +170,10 @@ uv run pytest tests/test_server.py -v
 **Run end-to-end tests**:
 ```bash
 # Via MCP Server
-uv run python examples/real_world_tests.py
+uv run --env-file .env python examples/real_world_tests.py
 
 # Pure MATLAB (for comparison/validation)
-.venv/bin/matlab-cli -f examples/real_world_tests.m
+uv run --env-file .env matlab-cli -f examples/real_world_tests.m
 ```
 
 ## Running Tests
@@ -262,10 +227,10 @@ uv run pytest -m "not slow"
 
 ```bash
 # Python version (via MCP)
-uv run python examples/real_world_tests.py
+uv run --env-file .env python examples/real_world_tests.py
 
 # MATLAB version (native)
-.venv/bin/matlab-cli -f examples/real_world_tests.m
+uv run --env-file .env matlab-cli -f examples/real_world_tests.m
 ```
 
 ### Test Output

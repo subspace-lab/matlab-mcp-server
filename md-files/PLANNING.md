@@ -121,6 +121,9 @@ A robust, feature-rich MCP server that bridges MATLAB and AI coding assistants, 
 
 ## Known Issues & Technical Debt
 
+### MATLAB Session Lifecycle
+- **Sessions may remain open indefinitely**: Background sessions can persist without user awareness, consuming resources and license seats. Consider GUI-only sessions or timeout mechanisms (see issue #1).
+
 ### Figure Export Limitations
 - **SVG/PDF export in headless mode**: MATLAB's print command requires a display for vector formats (SVG, PDF).
   - **Workaround**: Use PNG/JPG export in headless mode (works fine), or use GUI mode for vector formats.

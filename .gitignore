@@ -64,3 +64,5 @@ test_*.mat
 # Environment configuration
 .env
 .env.local
+
+social/
