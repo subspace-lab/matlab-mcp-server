@@ -206,3 +206,7 @@ MIT License
 ## Contributing
 
 Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and guidelines.
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=subspace-lab/matlab-mcp-server&type=date&legend=top-left)](https://www.star-history.com/#subspace-lab/matlab-mcp-server&type=date&legend=top-left)
