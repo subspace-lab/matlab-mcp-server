@@ -44,7 +44,7 @@ test-integration:
 	uv run pytest tests/test_server.py -v
 
 test-e2e:
-	uv run python examples/real_world_tests.py
+	uv run --env-file .env python examples/essentials_demo.py
 
 test-all: test test-e2e
 
