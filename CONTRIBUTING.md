@@ -104,7 +104,7 @@ matlab-cli --help
 matlab-mcp
 ```
 
-### Claude Code Configuration (Development)
+### MCP Client Configuration (Development)
 
 When running from source, create `.mcp.json` in your project root directory:
 
@@ -128,7 +128,11 @@ When running from source, create `.mcp.json` in your project root directory:
 
 Replace `/absolute/path/to/matlab-mcp-server` with the actual path to your cloned repository.
 
-**Note:** For Claude Desktop, use `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) or `%APPDATA%\Claude\claude_desktop_config.json` (Windows) instead.
+**For other MCP clients** (Claude Desktop, Cursor, VS Code, Cline, etc.), see:
+- Top 5 clients: [README.md Installation section](../README.md#installation)
+- All 16 clients: [MCP_CLIENT_SETUP.md](md-files/MCP_CLIENT_SETUP.md)
+
+Use the local development configuration pattern shown above, adapting to each client's config format.
 
 ## Project Structure
 

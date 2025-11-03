@@ -21,28 +21,24 @@ A Model Context Protocol (MCP) server that enables seamless integration between 
 - MATLAB installed on your system
 - `uv` package manager installed ([install uv](https://docs.astral.sh/uv/getting-started/installation/))
 
-### Option 1: Zero-Installation Setup (Recommended)
+### Installation
 
-Just configure and run - no manual installation needed!
+Choose your MCP client below for setup instructions:
 
-**1. Find your MATLAB library path:**
+<details>
+<summary><b>Claude Code</b> (CLI)</summary>
 
-```bash
-# macOS (Apple Silicon)
-/Applications/MATLAB_R2025b.app/bin/maca64
-
-# Linux
-/usr/local/MATLAB/R2024b/bin/glnxa64
-```
-
-**2. Configure Claude Code:**
-
-**Option A: Using CLI (Recommended)**
+**Using CLI (Recommended):**
 
 ```bash
 # macOS (Apple Silicon)
 claude mcp add --transport stdio matlab \
   --env DYLD_LIBRARY_PATH=/Applications/MATLAB_R2025b.app/bin/maca64 \
+  -- uvx matlab-mcp-server
+
+# macOS (Intel)
+claude mcp add --transport stdio matlab \
+  --env DYLD_LIBRARY_PATH=/Applications/MATLAB_R2025b.app/bin/maci64 \
   -- uvx matlab-mcp-server
 
 # Linux
@@ -51,13 +47,12 @@ claude mcp add --transport stdio matlab \
   -- uvx matlab-mcp-server
 ```
 
-This uses **local scope** by default (private to you, only this project). For other scopes:
+**Scope options:**
+- Default (local): Private to you, only this project
 - `--scope project`: Share with team (stores in `.mcp.json`, can be committed to git)
 - `--scope user`: Available across all your projects
 
-**Option B: Manual `.mcp.json` file**
-
-Create `.mcp.json` in your project root directory:
+**Manual configuration (`.mcp.json` in project root):**
 
 ```json
 {
@@ -73,18 +68,171 @@ Create `.mcp.json` in your project root directory:
 }
 ```
 
-Replace the library path with your actual MATLAB path from step 1.
+Replace with your MATLAB path. Use `LD_LIBRARY_PATH` for Linux.
 
-**For Linux**, use `LD_LIBRARY_PATH` instead of `DYLD_LIBRARY_PATH`.
+**Verify:**
+```bash
+claude mcp list
+claude mcp info matlab
+```
 
-That's it! When Claude Code starts, `uvx` will automatically:
-- Download `matlab-mcp-server` from PyPI
-- Install `matlabengine` and all dependencies
-- Start the MATLAB MCP server
+</details>
 
-### Option 2: Configuration Helper (If you don't know your MATLAB path)
+<details>
+<summary><b>Claude Desktop</b></summary>
 
-Run the helper script to auto-detect MATLAB and display the config:
+**Configuration File Location:**
+
+- **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+- **Linux**: `~/.config/Claude/claude_desktop_config.json`
+
+**Configuration:**
+
+```json
+{
+  "mcpServers": {
+    "matlab": {
+      "command": "uvx",
+      "args": ["matlab-mcp-server"],
+      "env": {
+        "DYLD_LIBRARY_PATH": "/Applications/MATLAB_R2025b.app/bin/maca64"
+      }
+    }
+  }
+}
+```
+
+**Platform-specific environment variables:**
+
+- **macOS (Apple Silicon)**: `"DYLD_LIBRARY_PATH": "/Applications/MATLAB_R2025b.app/bin/maca64"`
+- **macOS (Intel)**: `"DYLD_LIBRARY_PATH": "/Applications/MATLAB_R2025b.app/bin/maci64"`
+- **Linux**: `"LD_LIBRARY_PATH": "/usr/local/MATLAB/R2024b/bin/glnxa64"`
+- **Windows**: Usually not needed (installer handles library paths)
+
+**Steps:**
+1. Create or edit the config file at the location above
+2. Add your MCP server configuration with correct MATLAB path
+3. **Restart Claude Desktop completely** (quit and reopen)
+4. Look for the MCP server icon (🔨) in Claude Desktop interface
+
+</details>
+
+<details>
+<summary><b>Cursor</b></summary>
+
+**UI Configuration:**
+
+Go to `Cursor Settings` → `MCP` → `Add new MCP Server`:
+- **Name**: `matlab`
+- **Command**: `uvx matlab-mcp-server`
+- Click `Edit` to add environment variables
+
+**Configuration File Location:**
+
+- **macOS**: `~/Library/Application Support/Cursor/mcp_config.json`
+- **Windows**: `%APPDATA%\Cursor\mcp_config.json`
+- **Linux**: `~/.config/Cursor/mcp_config.json`
+
+**Configuration:**
+
+```json
+{
+  "mcpServers": {
+    "matlab": {
+      "command": "uvx",
+      "args": ["matlab-mcp-server"],
+      "env": {
+        "DYLD_LIBRARY_PATH": "/Applications/MATLAB_R2025b.app/bin/maca64"
+      }
+    }
+  }
+}
+```
+
+Replace with your MATLAB path (see Claude Desktop section for platform-specific paths).
+
+**Steps:**
+1. Create `mcp_config.json` if it doesn't exist
+2. Add MCP server configuration
+3. Restart Cursor completely
+
+</details>
+
+<details>
+<summary><b>VS Code</b> (GitHub Copilot)</summary>
+
+**VS Code Settings (User or Workspace):**
+
+```json
+{
+  "github.copilot.chat.mcp.servers": {
+    "matlab": {
+      "command": "uvx",
+      "args": ["matlab-mcp-server"],
+      "env": {
+        "DYLD_LIBRARY_PATH": "/Applications/MATLAB_R2025b.app/bin/maca64"
+      }
+    }
+  }
+}
+```
+
+**CLI Installation:**
+
+```bash
+# macOS (Apple Silicon)
+code --add-mcp '{"name":"matlab","command":"uvx","args":["matlab-mcp-server"],"env":{"DYLD_LIBRARY_PATH":"/Applications/MATLAB_R2025b.app/bin/maca64"}}'
+
+# Linux
+code --add-mcp '{"name":"matlab","command":"uvx","args":["matlab-mcp-server"],"env":{"LD_LIBRARY_PATH":"/usr/local/MATLAB/R2024b/bin/glnxa64"}}'
+```
+
+Replace with your MATLAB path (see Claude Desktop section for platform-specific paths).
+
+**Resources:**
+- [Use MCP servers in VS Code](https://code.visualstudio.com/docs/copilot/chat/mcp-servers)
+
+</details>
+
+<details>
+<summary><b>Codex</b></summary>
+
+**CLI:**
+
+```bash
+codex mcp add matlab uvx "matlab-mcp-server"
+```
+
+Then manually edit `~/.codex/config.toml` to add environment variables:
+
+**Edit `~/.codex/config.toml`:**
+
+```toml
+[mcp_servers.matlab]
+command = "uvx"
+args = ["matlab-mcp-server"]
+
+[mcp_servers.matlab.env]
+DYLD_LIBRARY_PATH = "/Applications/MATLAB_R2025b.app/bin/maca64"
+```
+
+**Platform-specific environment variables:**
+
+- **macOS (Apple Silicon)**: `DYLD_LIBRARY_PATH = "/Applications/MATLAB_R2025b.app/bin/maca64"`
+- **macOS (Intel)**: `DYLD_LIBRARY_PATH = "/Applications/MATLAB_R2025b.app/bin/maci64"`
+- **Linux**: `LD_LIBRARY_PATH = "/usr/local/MATLAB/R2024b/bin/glnxa64"`
+
+**Resources:**
+- [Codex MCP Documentation](https://github.com/openai/codex/blob/main/codex-rs/config.md#mcp_servers)
+
+</details>
+
+**For 11 additional clients** (Windsurf, Continue, Amp, Cline, Gemini CLI, Goose, Kiro, LM Studio, opencode, Qodo Gen, Warp), see **[Complete Setup Guide →](md-files/MCP_CLIENT_SETUP.md)**
+
+### Finding Your MATLAB Library Path
+
+If you don't know your MATLAB library path, use the configuration helper:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/subspace-lab/matlab-mcp-server/main/install-matlab-mcp.sh | bash
@@ -93,9 +241,14 @@ curl -fsSL https://raw.githubusercontent.com/subspace-lab/matlab-mcp-server/main
 The script will:
 - Auto-detect your MATLAB installation
 - Display the config with the correct paths
-- You copy and paste it into your `.mcp.json` file (in project root)
+- You copy and paste it into your MCP client's config file
 
-### Option 3: Manual Installation
+That's it! When your MCP client starts, `uvx` will automatically:
+- Download `matlab-mcp-server` from PyPI
+- Install `matlabengine` and all dependencies
+- Start the MATLAB MCP server
+
+### Manual Installation
 
 If you prefer to install manually or the automated installer doesn't work:
 
@@ -121,56 +274,30 @@ uv pip install matlab-mcp-server
 
 #### 3. Configure MCP server
 
-Create `.mcp.json` in your project root directory:
+Follow the configuration instructions for your MCP client in the sections above. Use `matlab-mcp` as the command instead of `uvx matlab-mcp-server`.
 
-**macOS (Apple Silicon):**
+**Example for Claude Code (`.mcp.json` in project root):**
+
 ```json
 {
   "mcpServers": {
     "matlab": {
       "command": "matlab-mcp",
       "env": {
-        "DYLD_LIBRARY_PATH": "/Applications/MATLAB_R20XXx.app/bin/maca64"
+        "DYLD_LIBRARY_PATH": "/Applications/MATLAB_R2025b.app/bin/maca64"
       }
     }
   }
 }
 ```
 
-**macOS (Intel):**
-```json
-{
-  "mcpServers": {
-    "matlab": {
-      "command": "matlab-mcp",
-      "env": {
-        "DYLD_LIBRARY_PATH": "/Applications/MATLAB_R20XXx.app/bin/maci64"
-      }
-    }
-  }
-}
-```
+Replace with your MATLAB path:
+- **macOS (Apple Silicon)**: `DYLD_LIBRARY_PATH` → `/Applications/MATLAB_R20XXx.app/bin/maca64`
+- **macOS (Intel)**: `DYLD_LIBRARY_PATH` → `/Applications/MATLAB_R20XXx.app/bin/maci64`
+- **Linux**: `LD_LIBRARY_PATH` → `/usr/local/MATLAB/R20XXx/bin/glnxa64`
+- **Windows**: Usually not needed
 
-**Linux:**
-```json
-{
-  "mcpServers": {
-    "matlab": {
-      "command": "matlab-mcp",
-      "env": {
-        "LD_LIBRARY_PATH": "/usr/local/MATLAB/R20XXx/bin/glnxa64"
-      }
-    }
-  }
-}
-```
-
-Replace `R20XXx` with your actual MATLAB version.
-
-**Note for Claude Desktop users:** If you're using Claude Desktop (the desktop app) instead of Claude Code (CLI), the configuration file is located at:
-
-- **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
-- **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+For other MCP clients, see configuration sections above or [MCP_CLIENT_SETUP.md](md-files/MCP_CLIENT_SETUP.md)
 
 ## Available Tools
 

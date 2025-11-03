@@ -66,3 +66,4 @@ test_*.mat
 .env.local
 
 social/
+.claude/
